@@ -1,0 +1,2 @@
+defmodule Geolocation do
+end
