@@ -25,3 +25,5 @@ geolocation-*.tar
 
 # Temporary files for e.g. tests
 /tmp
+
+/pgdata
