@@ -4,7 +4,8 @@ defmodule Geolocation.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Geolocation.Repo, []}
+      {Geolocation.Repo, []},
+      {Geolocation.LifeCycle.LocationsImportSupervisor, nil}
     ]
 
     opts = [strategy: :one_for_one, name: Geolocation.Supervisor]

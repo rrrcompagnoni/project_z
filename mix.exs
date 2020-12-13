@@ -23,7 +23,8 @@ defmodule Geolocation.MixProject do
   defp deps do
     [
       {:ecto_sql, "~> 3.0"},
-      {:postgrex, ">= 0.0.0"}
+      {:postgrex, ">= 0.0.0"},
+      {:nimble_csv, "~> 1.0"}
     ]
   end
 
@@ -32,7 +33,7 @@ defmodule Geolocation.MixProject do
 
   defp aliases do
     [
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end
