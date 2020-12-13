@@ -15,7 +15,7 @@ defmodule Geolocation.MixProject do
 
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :plug_cowboy],
       mod: {Geolocation.Application, []}
     ]
   end
@@ -24,7 +24,9 @@ defmodule Geolocation.MixProject do
     [
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
-      {:nimble_csv, "~> 1.0"}
+      {:nimble_csv, "~> 1.0"},
+      {:plug_cowboy, "~> 2.4"},
+      {:jason, "~> 1.2"}
     ]
   end
 

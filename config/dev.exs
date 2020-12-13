@@ -5,3 +5,6 @@ config :geolocation, Geolocation.Repo,
   password: "postgres",
   database: "geolocation_repo_dev",
   hostname: "db"
+
+config :geolocation,
+  http_port: 4000
