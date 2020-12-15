@@ -35,7 +35,8 @@ defmodule Geolocation.MixProject do
 
   defp aliases do
     [
-      test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.drop --quiet", "ecto.create --quiet", "ecto.migrate", "test"],
+      setup_database: ["ecto.drop", "ecto.create", "ecto.migrate"]
     ]
   end
 end

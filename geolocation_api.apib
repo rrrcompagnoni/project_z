@@ -1,0 +1,29 @@
+FORMAT: 1A
+
+# Geolocation API
+
+## Locations [/locations{?ip-address}]
+
+### Find a location [GET]
+
++ Parameters
+
+    + ip-address (string, required, `200.106.141.15`) - The IP address of a location.
+
++ Response 200 (application/json)
+
+    + Body
+
+        ```json
+            {
+              "city": "DuBuquemouth",
+              "country": "Nepal",
+              "country_code": "SI",
+              "ip_address": "200.106.141.15",
+              "latitude": "-84.87503094689836",
+              "longitude": "7.206435933364332"
+            }
+        ```
++ Response 404
+
+    + Body
