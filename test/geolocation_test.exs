@@ -3,6 +3,8 @@ defmodule GeolocationTest do
 
   import ExUnit.CaptureLog
 
+  alias Geolocation.Location
+
   defmodule GeolocationTest.FakeWorker do
     def import_locations(_, ".csv") do
       %{
@@ -40,6 +42,25 @@ defmodule GeolocationTest do
                :ok =
                  Geolocation.import_locations("data.json", start_at, GeolocationTest.FakeWorker)
              end) =~ "The file provided is not supported."
+    end
+  end
+
+  describe "find_location/1" do
+    test "an existent location" do
+      assert {:ok,
+              %Location{
+                city: "DuBuquemouth",
+                country: "Nepal",
+                country_code: "SI",
+                ip_address: "200.106.141.15",
+                latitude: "-84.87503094689836",
+                longitude: "7.206435933364332",
+                mystery_value: "19321398717239"
+              }} = Geolocation.find_location("200.106.141.15")
+    end
+
+    test "a not existent location" do
+      assert {:error, :location_not_found} = Geolocation.find_location("192.168.1.1")
     end
   end
 end

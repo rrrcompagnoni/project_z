@@ -59,4 +59,22 @@ defmodule Geolocation do
   def count_locations do
     Persistence.count_locations()
   end
+
+  @doc """
+  Find a location given an ip address.
+  """
+  @spec find_location(String.t()) ::
+          {:ok, Geolocation.Location.t()} | {:error, :location_not_found}
+  def find_location(ip_address)
+      when is_binary(ip_address) do
+    case repo().get_by(Geolocation.Persistence.Location, ip_address: ip_address) do
+      nil ->
+        {:error, :location_not_found}
+
+      %Geolocation.Persistence.Location{} = location ->
+        {:ok, Geolocation.Location.cast_schema(location)}
+    end
+  end
+
+  defp repo(), do: Application.get_env(:geolocation, :repo)
 end

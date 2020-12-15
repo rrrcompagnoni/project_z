@@ -11,3 +11,5 @@ config :geolocation,
   http_port: 4001
 
 config :plug, :validate_header_keys_during_test, true
+
+config :geolocation, :repo, Geolocation.Mocks.Repo
