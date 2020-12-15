@@ -22,8 +22,9 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 geolocation-*.tar
 
-
 # Temporary files for e.g. tests
 /tmp
 
 /pgdata
+
+data_dump.csv

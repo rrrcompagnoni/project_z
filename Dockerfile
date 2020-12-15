@@ -11,6 +11,11 @@ COPY test .
 COPY mix.exs .
 COPY mix.lock .
 
+# To help the seeding of the development database
+# copy the data_dump file to the project
+# root path and uncomment the next line.
+# COPY data_dump.csv .
+
 RUN mix local.hex --force
 RUN mix local.rebar --force
 
