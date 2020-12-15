@@ -1,4 +1,4 @@
-defmodule Geolocation.Persistence.Location do
+defmodule Geolocation.Schemas.Location do
   use Ecto.Schema
   import Ecto.Changeset
 

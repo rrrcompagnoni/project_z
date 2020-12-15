@@ -1,7 +1,6 @@
 defmodule Geolocation.Workers.Locations do
   alias Geolocation.LifeCycle.LocationsTaskSupervisor
   alias Geolocation.Machinery.LocationsImportReport
-  alias Geolocation.Persistence
 
   NimbleCSV.define(CSVLocationsParser, separator: ",")
 
@@ -29,7 +28,7 @@ defmodule Geolocation.Workers.Locations do
             mystery_value: mystery_value
           }
 
-          {Persistence.valid_location_attributes?(attributes), attributes}
+          {Geolocation.valid_location_attributes?(attributes), attributes}
       end
     )
     |> Stream.flat_map(fn
@@ -42,7 +41,7 @@ defmodule Geolocation.Workers.Locations do
     end)
     |> Stream.chunk_every(5_000)
     |> Enum.each(fn locations ->
-      {:ok, {accepted, _}} = Persistence.bulk_insert_locations(locations)
+      {:ok, {accepted, _}} = Geolocation.bulk_insert_locations(locations)
 
       LocationsImportReport.report_accepted(accepted)
       LocationsImportReport.report_noop(length(locations) - accepted)

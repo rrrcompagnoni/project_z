@@ -13,3 +13,5 @@ config :geolocation,
 config :plug, :validate_header_keys_during_test, true
 
 config :geolocation, :repo, Geolocation.Mocks.Repo
+
+config :geolocation, :locations_import_worker, Geolocation.Mocks.Workers.Locations

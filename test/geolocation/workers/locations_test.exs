@@ -12,7 +12,6 @@ defmodule Geolocation.Workers.LocationsTest do
                  ".csv"
                )
 
-      assert Geolocation.count_locations() == 18
       assert %LocationsImportReport{accepted: 0, discarded: 0, noop: 0}
     end
 

@@ -1,7 +1,7 @@
 defmodule Geolocation do
-  alias Geolocation.Persistence
-
   require Logger
+
+  alias Geolocation.Schemas
 
   @doc """
   Import locations from a source data.
@@ -9,15 +9,14 @@ defmodule Geolocation do
   This function is able to work with:
     - *CSV* source file (provide an absolute path to the *local* file).
   """
-  @spec import_locations(String.t(), DateTime.t(), module()) :: atom()
+  @spec import_locations(String.t(), DateTime.t()) :: atom()
   def import_locations(
         path,
-        start_at \\ DateTime.now!("Etc/UTC"),
-        worker \\ Geolocation.Workers.Locations
+        start_at \\ DateTime.now!("Etc/UTC")
       )
       when is_binary(path) do
     path
-    |> worker.import_locations(Path.extname(path))
+    |> locations_import_worker().import_locations(Path.extname(path))
     |> draw_locations_import_report(start_at)
     |> Logger.info()
   end
@@ -37,27 +36,27 @@ defmodule Geolocation do
   end
 
   @doc """
-  Import a single location.
+  Insert locations into the database in one pass.
+
+  It assumes all locations given are
+  from a reliable source of data. Any invalid location
+  will rollback the database transaction.
+  The `Geolocation.valid_location_attributes?/1` helps you
+  to validate your attributes.
   """
-  @spec import_location(%{
-          :city => String.t(),
-          :country => String.t(),
-          :country_code => String.t(),
-          :ip_address => String.t(),
-          :latitude => String.t(),
-          :longitude => String.t(),
-          optional(:mystery_value) => String.t()
-        }) :: {:ok, Persistence.Location.t()} | {:error, Ecto.Changeset.t()}
-  def import_location(attributes) do
-    Persistence.insert_location(attributes)
+  @spec bulk_insert_locations(list(map())) :: {:ok, {integer(), nil | [term()]}}
+  def bulk_insert_locations(locations) do
+    Geolocation.Repo.transaction(fn ->
+      Geolocation.Repo.insert_all(Schemas.Location, locations, on_conflict: :nothing)
+    end)
   end
 
   @doc """
-  Count the number of locations available on database.
+  Checks whether location attributes are valid or invalid.
   """
-  @spec count_locations :: integer()
-  def count_locations do
-    Persistence.count_locations()
+  @spec valid_location_attributes?(map()) :: true | false
+  def valid_location_attributes?(attributes) do
+    Schemas.Location.changeset(%Schemas.Location{}, attributes).valid?
   end
 
   @doc """
@@ -67,14 +66,15 @@ defmodule Geolocation do
           {:ok, Geolocation.Location.t()} | {:error, :location_not_found}
   def find_location(ip_address)
       when is_binary(ip_address) do
-    case repo().get_by(Geolocation.Persistence.Location, ip_address: ip_address) do
+    case repo().get_by(Schemas.Location, ip_address: ip_address) do
       nil ->
         {:error, :location_not_found}
 
-      %Geolocation.Persistence.Location{} = location ->
+      %Schemas.Location{} = location ->
         {:ok, Geolocation.Location.cast_schema(location)}
     end
   end
 
   defp repo(), do: Application.get_env(:geolocation, :repo)
+  defp locations_import_worker(), do: Application.get_env(:geolocation, :locations_import_worker)
 end

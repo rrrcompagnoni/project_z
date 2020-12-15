@@ -1,7 +1,7 @@
-defmodule Geolocation.Persistence.LocationTest do
+defmodule Geolocation.Schemas.LocationTest do
   use Geolocation.RepoCase, async: true
 
-  alias Geolocation.Persistence.Location
+  alias Geolocation.Schemas.Location
 
   @attributes %{
     city: "DuBuquemouth",

@@ -8,8 +8,6 @@ defmodule Geolocation.RepoCase do
       import Ecto
       import Ecto.Query
       import Geolocation.RepoCase
-
-      # and any other stuff
     end
   end
 

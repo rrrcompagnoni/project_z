@@ -13,7 +13,7 @@ defmodule Geolocation.Location do
             longitude: "",
             mystery_value: ""
 
-  def cast_schema(%Geolocation.Persistence.Location{} = location) do
+  def cast_schema(%Geolocation.Schemas.Location{} = location) do
     attributes = Map.drop(location, [:id, :__meta__, :__struct__])
 
     %__MODULE__{
