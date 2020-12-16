@@ -38,5 +38,7 @@ iex(1)> Geolocation.import_locations("data_dump.csv")
 ### Webserver
 ```
 docker-compose up
+
+# Available on http://localhost:4000
 ```
 The Geolocation API blueprint can be found on `geolocation_api.apib`.
