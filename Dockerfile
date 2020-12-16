@@ -18,5 +18,3 @@ COPY mix.lock .
 
 RUN mix local.hex --force
 RUN mix local.rebar --force
-
-RUN mix deps.get

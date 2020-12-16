@@ -14,6 +14,14 @@ See the `Dockerfile` instructions.
 docker-compose build
 ```
 
+```
+docker-compose run geolocation /bin/sh
+```
+
+```
+mix deps.get && exit
+```
+
 ### Database setup
 ```
 docker-compose run geolocation mix setup_database
